@@ -92,12 +92,12 @@ while True:
 
                 displaySurface.blit(textSurface, textRect)
 
-                prediction = model.predict(image_array)
-                print(str(labels[np.argmax(prediction)]))
+                # prediction = model.predict(image_array)
+                # print(str(labels[np.argmax(prediction)]))
             
             if event.type == KEYDOWN:
                 if event.unicode == 'n':
                     displaySurface.fill(white)
-                                    
+
     
     pygame.display.update()
