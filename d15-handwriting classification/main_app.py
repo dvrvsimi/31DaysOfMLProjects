@@ -27,7 +27,7 @@ displaySurface = pygame.display.set_mode((x_size, y_size))
 pygame.display.set_caption('handwriting board')
 
 
-font = pygame.font.SysFont('Arial', 30)
+font = pygame.font.SysFont('Arial', 20)
 boundInc = 10
 isWriting = False
 x_move_value = []
@@ -44,7 +44,8 @@ while True:
         
         if event.type == MOUSEMOTION and isWriting:
             x_move, y_move = event.pos
-            pygame.draw.circle(displaySurface, black, (x_move, y_move), 4, 0)
+            pygame.draw.circle(displaySurface, white, (x_move, y_move), 4, 0)
+            
             x_move_value.append(x_move)
             y_move_value.append(y_move)
         
@@ -56,16 +57,9 @@ while True:
             x_move_value = sorted(x_move_value)
             y_move_value = sorted(y_move_value)
 
-        if event.type == MOUSEBUTTONDOWN:
-            isWriting = True
 
-        if event.type == MOUSEBUTTONUP:
-            isWriting = False
-            x_move_value = sorted(x_move_value)
-            y_move_value = sorted(y_move_value)
-
-            x_min, x_max = max(0, x_move_value[0]-boundInc), min(x_size, x_move_value[-1]+boundInc)
-            y_min, y_max = max(0, y_move_value[0]-boundInc), min(y_size, y_move_value[-1]+boundInc)
+            x_min, x_max = max(x_move_value[0]-boundInc, 0), min(x_size, x_move_value[-1]+boundInc)
+            y_min, y_max = max( y_move_value[0]-boundInc, 0), min(y_size, y_move_value[-1]+boundInc)
             
             x_move_value = []
             y_move_value = []
@@ -85,10 +79,10 @@ while True:
 
                 label = str(labels[np.argmax(model.predict(image_array.reshape(1, 28, 28, 1)))])
 
-                textSurface = font.render(label, True, red)
+                textSurface = font.render(label, True, red, white)
                 textRect = textSurface.get_rect()
                 # note if error shows from using x_min, y_max, use x_min, y_min
-                textRect.left, textRect.bottom = x_min, y_max
+                textRect.left, textRect.bottom = x_min, y_min
 
                 displaySurface.blit(textSurface, textRect)
 
@@ -97,7 +91,7 @@ while True:
             
             if event.type == KEYDOWN:
                 if event.unicode == 'n':
-                    displaySurface.fill(white)
+                    displaySurface.fill(black)
 
     
     pygame.display.update()
