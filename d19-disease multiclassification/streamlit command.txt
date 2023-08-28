@@ -1,1 +1,0 @@
-streamlit run "the path to your script"
